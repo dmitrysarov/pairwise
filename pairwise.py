@@ -88,11 +88,11 @@ class Pair_comp(object):
             for i in range(len(self.obj_arr)):
                 print('Object {}: {}'.format(i, self.obj_arr[i]), '\n Score {:.4f}'.format(self.scores[i]))
         elif self.obj_dim == 2 or self.obj_dim == 3:
-            _, ax = plt.subplots(1, len(self.obj_arr))
+            f, ax = plt.subplots(1, len(self.obj_arr))
+            f.set_figwidth(30)
             for i in range(len(self.obj_arr)):
                 ax[i].imshow(self.obj_arr[i])
-                ax[i].set_title('Object {} \n Score {:.4f}'.format(i, self.scores[i]))
-            plt.tight_layout()
+                ax[i].set_title('Object {} \n Score {:.3f}'.format(i, self.scores[i]))
             plt.show()
         else:
             raise NotImplementedError('object dimentiality not supported')
@@ -148,8 +148,7 @@ class Pair_comp(object):
         while True:
             scores = update_score(self.comp_matrix, scores)
             ll = self.calc_loglikelihood(scores, self.comp_matrix)
-            #if np.isclose(prev_ll, ll, rtol=1e-6): #plateau
-            if iterations > 5:
+            if np.isclose(prev_ll, ll, rtol=1e-6) and prev_ll > ll: #plateau
                 break
             iterations += 1
             prev_ll = ll
