@@ -101,6 +101,8 @@ class Pair_comp(object):
             weights = 1/elem_freq
             weights = weights/np.sum(weights)
             indx1, indx2 = np.random.choice(list(range(len(self.comp_matrix))), size=2, replace=False, p=weights)
+            if self.comp_matrix[indx1, indx2] + self.comp_matrix[indx2, indx1] != 0: # if such comparison was performed
+                continue
             yield indx1, indx2
 
     def sample_pair_dense(self):
