@@ -128,7 +128,7 @@ class Pair_comp(object):
         while True:
             try:
                 comp_result = int(input('Compare objects (-1: left object win; 0: draw; 1: right object win)\n'))
-                if isinstance(comp_resulat, int):
+                if isinstance(comp_result, int):
                     break
             except:
                 pass
