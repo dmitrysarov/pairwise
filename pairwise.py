@@ -107,6 +107,7 @@ class Pair_comp(object):
             sampler = self.sample_pair_sparse()
         else:
             raise
+
         for ind1, ind2 in sampler:
             winner = int(self.compare_pair(ind1, ind2)) # on of {-1, 0, 1}; -1 ind1 win, 0 equal, 1 ind2 win
             if winner == -1:
@@ -136,18 +137,21 @@ class Pair_comp(object):
         scores = np.ones(len(self.obj_arr))
         def update_score(competition_matrix, scores):
             assert all(np.diag(competition_matrix) == 0)
-            m = (competition_matrix + competition_matrix.transpose(0,1))/(self.ind_matrix*scores + 1e-10).sum(-1)
+            m = (competition_matrix + competition_matrix.transpose())/(self.ind_matrix*scores + 1e-10).sum(-1)
             m = m - np.diag(np.diag(m))
             scores = competition_matrix.sum(-1)/(m + 1e-10).sum(-1)
             return scores/scores.sum()
         prev_ll = -np.inf
         ll = self.calc_loglikelihood(scores, self.comp_matrix)
         self.ll_log.append(ll)
+        iterations = 0
         while True:
             scores = update_score(self.comp_matrix, scores)
             ll = self.calc_loglikelihood(scores, self.comp_matrix)
-            if np.isclose(prev_ll, ll, rtol=1e-6) or prev_ll>ll: #plateau
+            #if np.isclose(prev_ll, ll, rtol=1e-6): #plateau
+            if iterations > 5:
                 break
+            iterations += 1
             prev_ll = ll
             self.ll_log.append(ll)
         self.scores = scores
