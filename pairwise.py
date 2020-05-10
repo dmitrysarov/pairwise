@@ -94,13 +94,13 @@ class Pair_comp(object):
     def sample_pair_sparse(self):
         '''
         stochastic solution of sample task
-        sampling will continue till comparisons not become connected (graph)
+        sampling will continue till comp_matrix not become connected (graph)
         '''
-        while (not self.check_connectivity(self.comparisons)):
-            elem_freq = np.abs(np.sum(np.abs(self.comparisons), 1) - np.sum(np.abs(self.comparisons), 0)) + 1
+        while (not self.check_connectivity(self.comp_matrix)):
+            elem_freq = np.abs(np.sum(np.abs(self.comp_matrix), 1) - np.sum(np.abs(self.comp_matrix), 0)) + 1
             weights = 1/elem_freq
             weights = weights/np.sum(weights)
-            indx1, indx2 = np.random.choice(list(range(len(self.comparisons))), size=2, replace=False, p=weights)
+            indx1, indx2 = np.random.choice(list(range(len(self.comp_matrix))), size=2, replace=False, p=weights)
             yield indx1, indx2
 
     def sample_pair_dense(self):
