@@ -77,7 +77,7 @@ class Pair_comp(object):
             plt.show()
         else:
             raise NotImplementedError('object dimentiality not supported')
-        comp_result = input('Compare objects (-1: left object win; 0: draw; 1: right object win)')
+        comp_result = input('Compare objects (-1: left object win; 0: draw; 1: right object win)\n')
         return comp_result # {-1, 0, 1}
 
     def show_objects(self):
