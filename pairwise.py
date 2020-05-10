@@ -34,6 +34,49 @@ class Pair_comp(object):
             matrix.append(row)
         return np.array(matrix, dtype=np.float32)
 
+    @staticmethod
+    def check_connectivity(comparisons):
+        '''
+        check whether objects connected in comperison chain. Aka graph is connected
+        '''
+        num_objects = len(comparisons)
+        gr1 = {}; gr2 = {}; #direct and reverse graphs
+        def Add_edge(u, v) :
+            if u not in gr1 :
+                gr1[u] = [];
+            if v not in gr2 :
+                gr2[v] = [];
+            gr1[u].append(v);
+            gr2[v].append(u);
+        vis1 = [False]*num_objects #visited edges
+        vis2 = [False]*num_objects
+        def dfs1(x): #depth first search direct
+            vis1[x] = True
+            if x not in gr1:
+                gr1[x] = {}
+            for i in gr1[x]:
+                if (not vis1[i]):
+                    dfs1(i)
+        def dfs2(x): #depth first search reverse
+            vis2[x] = True
+            if x not in gr2:
+                gr2[x] = {}
+            for i in gr2[x]:
+                if (not vis2[i]):
+                    dfs2(i)
+        # create graph
+        edges = list(zip(*sparse.find(comparisons)[:-1]))
+        for edge in edges:
+            Add_edge(*edge) #add nodes and edges to gr1 (direct) and gr2 (reversed)
+        dfs1(0); # search in direct way
+        dfs2(0); # search in reverse way
+        for i in range(num_objects) :
+            # If any vertex it not visited in any direction
+            # Then graph is not connected
+            if (not vis1[i] and not vis2[i]) :
+                return False;
+        # If graph is connected
+        return True;
 
     def __init__(self, obj_arr, comparison_densety='dense'):
         '''
@@ -48,12 +91,17 @@ class Pair_comp(object):
         self.ind_matrix = self.make_index_matrix(len(self.obj_arr))
         self.scores = np.ones(len(obj_arr)) # default scores
 
-    def sample_pair_sparse(self, additive=1):
+    def sample_pair_sparse(self):
         '''
         stochastic solution of sample task
-        heuristic is that number of samples should be larger then object numbers by 1 or more ["additive" param]
+        sampling will continue till comparisons not become connected (graph)
         '''
-        raise NotImplementedError('Not yet implemented, use comparison_densety="dense"')
+        while (not self.check_connectivity(self.comparisons)):
+            elem_freq = np.abs(np.sum(np.abs(self.comparisons), 1) - np.sum(np.abs(self.comparisons), 0)) + 1
+            weights = 1/elem_freq
+            weights = weights/np.sum(weights)
+            indx1, indx2 = np.random.choice(list(range(len(self.comparisons))), size=2, replace=False, p=weights)
+            yield indx1, indx2
 
     def sample_pair_dense(self):
         '''
