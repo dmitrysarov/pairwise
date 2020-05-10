@@ -73,7 +73,7 @@ class Pair_comp(object):
             ax[0].imshow(self.obj_arr[ind1])
             ax[0].set_title('left object ind {}'.format(ind1))
             ax[1].imshow(self.obj_arr[ind2])
-            ax[0].set_title('right object ind {}'.format(ind2))
+            ax[1].set_title('right object ind {}'.format(ind2))
             plt.show()
         else:
             raise NotImplementedError('object dimentiality not supported')
