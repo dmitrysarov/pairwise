@@ -68,7 +68,7 @@ class Pair_comp(object):
         '''
         if self.obj_dim == 1:
             print('object 1: {}; object 2: {}'.format(self.obj_arr[ind1], self.obj_arr[ind2]))
-        elif self.obj_dim == 2:
+        elif self.obj_dim == 2 or self.obj_dim == 3:
             _, ax = plt.subplots(1, 2, figsize=(5, 5))
             ax[0].imshow(self.obj_arr[ind1])
             ax[0].set_title('object 1')
@@ -87,7 +87,7 @@ class Pair_comp(object):
         if self.obj_dim == 1:
             for i in range(len(self.obj_arr)):
                 print('Object {}: {}'.format(i, self.obj_arr[i]), '\n Score {:.4f}'.format(self.scores[i]))
-        elif self.obj_dim == 2:
+        elif self.obj_dim == 2 or self.obj_dim == 3:
             _, ax = plt.subplots(1, len(self.obj_arr))
             for i in range(len(self.obj_arr)):
                 ax[i].imshow(self.obj_arr[i])
