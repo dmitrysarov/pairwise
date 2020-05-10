@@ -67,17 +67,17 @@ class Pair_comp(object):
         perform comparison of objects. Input value should be {-1, 0, 1}
         '''
         if self.obj_dim == 1:
-            print('object 1: {}; object 2: {}'.format(self.obj_arr[ind1], self.obj_arr[ind2]))
+            print('left object: {}; right object: {}'.format(self.obj_arr[ind1], self.obj_arr[ind2]))
         elif self.obj_dim == 2 or self.obj_dim == 3:
             _, ax = plt.subplots(1, 2, figsize=(5, 5))
             ax[0].imshow(self.obj_arr[ind1])
-            ax[0].set_title('object 1')
+            ax[0].set_title('left object ind {}'.format(ind1))
             ax[1].imshow(self.obj_arr[ind2])
-            ax[1].set_title('object 2')
+            ax[0].set_title('right object ind {}'.format(ind2))
             plt.show()
         else:
             raise NotImplementedError('object dimentiality not supported')
-        comp_result = input('Compare objects (-1: object 1 win; 0: draw; 1: object 2 win)')
+        comp_result = input('Compare objects (-1: left object win; 0: draw; 1: right object win)')
         return comp_result # {-1, 0, 1}
 
     def show_objects(self):
