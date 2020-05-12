@@ -7,3 +7,5 @@ There are two preposed ways of sampling pairs:
 
 * "Dense" Where number of pairs = number of combinations of objects
 * "Sparse" Where connectivity graph is checked each comparison step. Sampling perfrom in stochastic manner, considering the object "popularity" in sampling probability.
+
+I use this approach in Cousera final project of "Bayesian Methods for Machine Learning" course.
